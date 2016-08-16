@@ -1,7 +1,6 @@
 ;(function () {
 	"use strict";
-	console.log(d3.select("body").style("color"));
-	return;
+	return console.log(d3.select("body").style("color"));
 	var svg = d3.select("body").insert("svg", ":first-child")
 		.attr("version", "1.1")
 		.attr("width", "100%")

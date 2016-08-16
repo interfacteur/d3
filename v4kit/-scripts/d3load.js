@@ -1,4 +1,9 @@
 var d3;
+
+require.config({
+	baseUrl: "-scripts/-lib-d3v4"
+});
+
 requirejs(["d3.min"], function (d) {
 	d3 = d;
 	requirejs([ //au 11 août 2016
@@ -33,5 +38,8 @@ requirejs(["d3.min"], function (d) {
 		"d3-voronoi",
 		"d3-zoom"
 	], function () {
-		requirejs(["../main"]);
+		require.config({
+			baseUrl: "-scripts"
+		});
+		requirejs(["main"]);
 });	});
