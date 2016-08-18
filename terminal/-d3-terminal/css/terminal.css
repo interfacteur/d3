@@ -1,0 +1,73 @@
+.terminal--perso	{
+	border-radius: .4em;
+	box-shadow: 0 0 1em grey;
+	height: 444px;
+	margin: 2em 1em;
+}
+
+
+
+body::before	{
+	content: " ";
+	display: table;
+}
+body	{
+	background: #EEE;
+}
+header,
+footer	{
+	text-align: center;
+}
+h1	{
+	font-size: 1.1em;
+	margin: .5em 1em;
+}
+h2	{
+	font-size: 1em;
+	margin: 1.5em 0 1em 0;
+}
+p,
+footer	{
+	font-size: .85em;
+}
+a	{
+	color: black;
+}
+
+
+
+p a	{
+	background-color: grey;
+	color: white;
+	padding: .25em .66em 0 .66em;
+	text-decoration: none;
+}
+p a span	{
+	font-weight: bold;
+	font-size: 1.25em;
+}
+p a:hover	{
+	background-color: #002543;
+}
+
+footer	{
+	background: #DDD;
+	font-style: italic;
+	padding: .66em;
+}
+footer ul::after{
+	clear: both;
+	content: " ";
+	display: table;
+}
+footer ul	{
+	margin: 0 18%;
+	width: 64%;
+}
+footer li	{
+	float: left;
+	line-height: 1.8em;
+	list-style-position: inside;
+	list-style-type: decimal;
+	margin: 0 1em;
+}
