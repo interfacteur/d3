@@ -1,0 +1,3 @@
+Modules au 11 août 2016.
+
+Avant d'en supprimer du répertoire, vérifier qu'ils ne soient pas en relation de dépendance avec l'un des modules requis.
