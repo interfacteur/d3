@@ -53,6 +53,7 @@ p a:hover	{
 footer	{
 	background: #DDD;
 	font-style: italic;
+	line-height: 1.55;
 	padding: .66em;
 }
 footer ul::after{
@@ -70,4 +71,7 @@ footer li	{
 	list-style-position: inside;
 	list-style-type: decimal;
 	margin: 0 1em;
+}
+.droit	{
+	font-style: normal;
 }
