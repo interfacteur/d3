@@ -9,6 +9,9 @@ Une interface de démo de l'action de d3.js sur une liste HTML, avec deux visual
 * d'éléments déclassés
 * de sélection finale
 
+
+http://www.equatorium.net/e1/in--interfaces~d3/dv-join.html
+
 <a href="http://www.equatorium.net/e1/in--interfaces~d3/dv-join.html">http://www.equatorium.net/e1/in--interfaces~d3/dv-join.html</a>
 
 Testé sur Firefox et Chrome Mac
