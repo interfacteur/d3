@@ -9,7 +9,7 @@ Une interface de l'action de d3.js sur une liste HTML, avec deux visualisations 
 * les éléments déclassés
 * la sélection finale
 
-[http://www.equatorium.net/e1/in--interfaces~d3/dv-join.html](http://www.equatorium.net/e1/in--interfaces~d3/dv-join.html)
+En ligne : http://www.equatorium.net/e1/in--interfaces~d3/dv-join.html
 
 Testé sur Firefox et Chrome Mac
 
