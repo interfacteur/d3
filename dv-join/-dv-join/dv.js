@@ -1,8 +1,5 @@
 /* Gaëtan Langhade, Interfacteur, sept. 2016 */
 
-// to do : étendre (à historique par ex.) le lexique
-		// surface / cadastre / lotir / lotsVierges / batir / chantier / horsLot ?
-
 ;(function () {
 	"use strict";
 
@@ -838,3 +835,7 @@
 	}
 
 }) ();
+
+
+// to do : étendre (à historique par ex.) le lexique
+		// surface / cadastre / lotir / lotsVierges / batir / chantier / horsLot ?
