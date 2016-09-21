@@ -13,7 +13,7 @@ Une interface de démo de l'action de d3.js sur une liste HTML, avec deux visual
 
 Testé sur Firefox et Chrome Mac
 
-(*) Sur la notion de "join" : https://bost.ocks.org/mike/join/
+(*) Sur le "data join" : https://bost.ocks.org/mike/join/
 
 et https://github.com/d3/d3/blob/master/CHANGES.md#selections-d3-selection pour sa mise en œuvre avec la version 4 de d3.js
 
