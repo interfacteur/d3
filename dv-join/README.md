@@ -1,8 +1,8 @@
-Visualisations démo de la notion de "join" (*)
+Visualisations de démo avec la notion de "join" (*)
 -------
 
-Une interface de l'action de d3.js sur une liste HTML, avec deux visualisations des données sur :
-* la sélection initiale
+Une interface avec une liste HTML sur laquelle d3.js agit, et deux visualisations des données concernant :
+* la sélection initiale dans la liste
 * le dataset
 * l'update
 * la création d'éléments
