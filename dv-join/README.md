@@ -1,4 +1,4 @@
-Visualisations démo de "join"
+Visualisations démo de la notion de "join"
 -------
 
 Une interface de démo de l'action de d3.js sur une liste HTML, avec deux visualisations des données de sélection initiale, de dataset, d'update, de création d'éléments, d'éléments déclassés, de sélection finale.
