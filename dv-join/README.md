@@ -9,6 +9,8 @@ Une interface avec une liste HTML sur laquelle d3.js agit, et deux visualisation
 * les éléments déclassés
 * la sélection finale
 
+Note de présentation : http://interfacteur.blogspot.com/2016/09/dataviz-demo-join-d3.js.html
+
 En ligne : http://www.equatorium.net/e1/in--interfaces~d3/dv-join.html
 
 Testé sur Firefox et Chrome Mac
