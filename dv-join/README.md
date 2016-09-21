@@ -15,5 +15,4 @@ Testé sur Firefox et Chrome Mac
 
 (*) Sur le "data join" : https://bost.ocks.org/mike/join/
 
-et https://github.com/d3/d3/blob/master/CHANGES.md#selections-d3-selection pour sa mise en œuvre avec la version 4 de d3.js
-
+Pour sa mise en œuvre avec la version 4 de d3.js : https://github.com/d3/d3/blob/master/CHANGES.md#selections-d3-selection
