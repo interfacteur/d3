@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+<meta charset="UTF-8">
+<title>Démo "join" \ D3.js / Equatorium</title>
+<meta name="author" content="Gaëtan Langhade, interfacteur">
+<link rel="stylesheet" href="-dv-join/styles.css">
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400i" rel="stylesheet">
+</head>
+
+<body>
+<h1 class="contraint">"Join" avec d3.js</h1>
+<form action="#" method="post" class="contraint">
+	<input type="submit" value="join d3.js">
+	<input type="text" class="pourvoyage" id="pourvoyage">
+	<span class="exemples">
+		<samp id="initial" class="initial ope2 plus" title="Sélection, éléments pré-existants">4</samp>
+		<span>&#x2192;</span>
+		<samp id="aPourvoir" class="aPourvoir" title=".data(), données liées">0</samp>
+		<span>:</span>
+		<samp id="renovation" class="renovation ope1" title="Update de .data(), éléments mis à jour">0</samp>
+		<samp id="construction" class="construction ope1 ope2 plus" title=".enter().append(), éléments ajoutés">0</samp>
+		<samp id="conservation" class="conservation ope1" title=".exit(), éléments déclassés mais conservés">0</samp>
+		<samp id="demolition" class="demolition ope2 moins" title=".exite().remove() partiel, éléments déclassés et soustraits">0</samp>
+		<span>&#x2192;</span>
+		<samp id="final" class="final" title="Total des éléments à l'issue du 'join'">0</samp>
+	</span>
+	<p class="cmd">
+		<label for="tempo">Durée des "soustractions" (en <abbr title="millisecondes">ms</abbr>) : </label><input type="number" value="300" id="tempo"> ;
+		<label for="delai">délai : </label><input type="number" value="75" id="delai"> ;
+		<label for="boucle">durée boucle : </label><input type="number" value="0" id="boucle"> (sinon valeur à 0)
+	</p>
+	<a href="#" class="legende" id="legende"><img src="-dv-join/legende.png" alt="Légende" width="375" height="135"></a>
+</form>
+<figure class="contraint">
+	<div></div>
+	<figcaption>.data([]) où [].length aléatoire entre 2 et 12 ; .enter() ajoute si nécessaire ; .exit() soustrait si nécessaire la moitié+ de l'excès - <a href="http://www.langhade.net/gaetan/">Gaëtan Langhade</a></figcaption>
+</figure>
+<ol class="contraint">
+	<li>liste manipulée par d3.js</li>
+	<li>élément</li>
+	<li>élément</li>
+	<li>élément</li>
+</ol>
+<article></article>
+<script src="-dv-join/d3.min.js"></script>
+<script src="-dv-join/dv.js"></script>
+</body>
+</html>

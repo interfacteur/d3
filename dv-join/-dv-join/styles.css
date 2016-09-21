@@ -1,0 +1,344 @@
+/* Gaëtan Langhade, Interfacteur, sept. 2016 */
+
+/* HTML */
+body	{
+	font-family: sans-serif;
+	margin: 0;
+	padding: 0 1em;
+}
+[type="submit"]	{
+	box-shadow: 0 0 .05em .06em darkSlateGray;
+	color: darkSlateGray;
+	cursor: pointer;
+	font-size: 100%;
+}
+[type="number"]	{
+	width: 4em;
+}
+a	{
+	color: inherit;
+	text-decoration: underline;
+}
+a:hover,
+a:focus	{
+	text-decoration: none;
+}
+h1	{
+	color: darkSlateGray;
+	font-family: "pt sans narrow";
+	font-size: 1.75em;
+	font-weight: normal;
+	margin: 0;
+	opacity: .5;
+	text-align: center;
+}
+.contraint	{
+	max-width: 1400px;
+}
+form	{
+	min-width: 1200px;
+	position: relative;
+}
+.pourvoyage	{
+	background: white;
+	border: 0;
+	width: 1em;
+}
+.exemples	{
+	display: inline-block;
+	font-size: 1.2em;
+	padding-left: .8em;
+}
+.exemples span	{
+	font-size: .75em;
+	font-weight: bold;
+}
+.exemples samp	{
+	border-radius: .25em;
+	color: white;
+	display: inline-block;
+	font-size: .85em;
+	height: 1.4em;
+	line-height: 1.66;
+	position: relative;
+	text-align: center;
+	width: 1.4em;
+}
+.ope1::before,
+.ope2::after	{
+	color: silver;
+	left: 0;
+	position: absolute;
+	text-align: center;
+	width: 100%;
+}
+.ope1::before	{
+	content: "+";
+	top: -1.4em;
+}
+.ope2::after	{
+	bottom: -1.5em;
+}
+.ope2.plus::after	{
+	content: "+";
+}
+.ope2.moins::after	{
+	content: "-";
+}
+.cmd	{
+	font-size: .9em;
+	margin-top: -1.5em;
+	text-align: right;
+}
+.legende	{
+	border: 1px solid rgba(47, 79, 79, .33);
+	position: absolute;
+	right: 1.5em;
+}
+.legende::after	{
+	background: white;
+	border: 1px solid darkSlateGray;
+	border-radius: 1em;
+	box-shadow: 0 0 0 1px darkSlateGray inset;
+	color: darkSlateGray;
+	content: "\2715";
+	display: inline-block;
+	font-family: monospace;
+	font-size: 1.1em;
+	line-height: 1;
+	padding: .15em .3em .1em .35em;
+	position: absolute;
+	right: 1em;
+	text-decoration: none;
+	top: 1em;
+}
+.legende.fermeture	{
+	height: 3em;
+	opacity: .33;
+	overflow: hidden;
+	width: 3em;
+}
+.legende.fermeture::after	{
+	content: "+";
+}
+figcaption	{
+	font-family: "open sans";
+	font-size: .9em;
+	color: silver;
+	text-align: center;
+}
+ol	{
+	box-shadow: 1.75em 0 rgb(51, 51, 51) inset;
+	margin: 0;
+	padding: 0 0 0 1.75em;
+	position: relative;
+}
+ol::before	{
+	color: darkSlateGray;
+	content: "liste manipulée par d3.js";
+	left: -4444em;
+	position: absolute;
+	top: -1em;
+}
+ol:hover::before	{
+	left: 0;
+}
+li	{
+	border: 3px solid rgb(51, 51, 51);
+	color: white;
+	list-style-position: outside;
+	margin-top: .33em;
+	padding: 0 0 0 5em;
+}
+li span	{
+	font-size: .66em;
+}
+
+/* SVG générique et 1 */
+svg	{
+	border: 1px dotted rgba(47, 79, 79, .33);
+	background: white;
+}
+article svg	{
+	background: rgba(47, 79, 79, .175);
+	border-radius: .33em;
+	bottom: .33em;
+	position: fixed;
+	z-index: -1;
+}
+line,
+path	{
+	fill: none;
+	stroke-width: 1px;
+}
+.axis {
+	font: 10px sans-serif;
+}
+.axis path,
+.axis line {
+	stroke: rgba(0, 0, 0, .2);
+	shape-rendering: crispEdges;
+}
+.axisDV2 path	{
+	display: none;
+}
+.axisDV2 line	{
+	stroke: #EBEEEE;
+	stroke-width: 4px;
+}
+.axisDV2 text	{
+	fill: white;
+	font-size: 1.1em;
+}
+path.final	{
+	fill: rgba(47, 79, 79, .175);
+}
+/* grilles */
+.grilles.sousgrilles line	{
+	stroke: rgba(47, 79, 79, .1);
+}
+.grilles line	{
+	stroke: rgb(223, 255, 204);
+}
+.lines path	{
+	stroke-width: 2px;
+}
+/* cercles */
+.cercles circle	{
+	fill: none;
+	stroke: darkSlateGray;
+	stroke-width: 2px;
+}
+/* rectangles */
+rect	{
+	stroke-width: 2px;
+}
+rect.aPourvoir,
+rect.demolition	{
+	fill: white;
+}
+[y] + rect.existant	{
+	opacity: .85;
+}
+.coeur rect	{
+	fill: rgba(223, 255, 204, .1);
+	stroke: rgb(223, 255, 204);
+	stroke-width: 2px;
+}
+/* stries */
+.stries g:first-child line	{
+	stroke-width: 8px;
+	opacity: 1;
+}
+.stries line	{
+	stroke-width: 7px;
+	opacity: .44;
+}
+/* courbe */
+.courbe path	{
+	stroke: darkSlateGray;
+}
+
+
+
+
+
+/* BASES */
+li,
+samp.initial	{
+	background: darkSlateGray;
+}
+samp.aPourvoir	{
+	box-shadow: 0 0 0 3px darkSlateGray inset;
+	color: darkSlateGray;
+}
+samp.final	{
+	box-shadow: 0 0 0 3px rgba(47, 79, 79, .175) inset;
+	color: darkSlateGray;
+	font-weight: bold;
+}
+path.demolition	{
+	fill: rgba(255, 255, 255, .44);
+	stroke: darkSlateGray;
+	stroke-width: 1px !important;
+}
+rect.existant	{
+	fill: darkSlateGray;
+	stroke: darkSlateGray;
+}
+rect.aPourvoir	{
+	stroke: darkSlateGray;
+}
+
+
+/* CONSTRUISANT */
+li.construit,
+samp.construction	{
+	background: steelBlue;
+}
+path.construction,
+rect.construction,
+line.construction,
+.segmentsSupDV2	{
+	stroke: steelBlue;
+}
+rect.construction,
+.cerclesconstruction circle	{
+	fill: steelBlue;
+}
+
+/* RENOVANT */
+li.renove,
+samp.renovation	{
+	background: oliveDrab;
+}
+path.renovation,
+rect.renovation,
+line.renovation	{
+	stroke: oliveDrab;
+}
+rect.renovation,
+.cerclesrenovation circle	{
+	fill: oliveDrab;
+}
+
+/* DÉCLASSANT */
+li.declassement,
+samp.conservation	{
+	background: chocolate;
+}
+samp.demolition	{
+	box-shadow: 0 0 0 3px chocolate inset;
+	color: chocolate;
+}
+path.conservation,
+rect.conservation,
+rect.demolition,
+line.conservation,
+.segmentsInfDV2	{
+	stroke: chocolate;
+}
+rect.conservation,
+.cerclesconservation circle	{
+	fill: chocolate;
+}
+.cerclesDV2 .cerclesdemolition circle	{
+	fill: #DAE0E0;
+	stroke: chocolate;
+	stroke-width: 1px;
+}
+
+
+
+
+/* SVG 2 */
+.lineDV2	{
+	stroke: #EBEEEE;
+}
+.areaDV2 path	{
+	fill: white;
+	stroke: none;
+}
+.cerclesDV2 circle	{
+	stroke: none;
+}
