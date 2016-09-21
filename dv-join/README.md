@@ -1,7 +1,13 @@
 Visualisations démo de la notion de "join"
 -------
 
-Une interface de démo de l'action de d3.js sur une liste HTML, avec deux visualisations des données de sélection initiale, de dataset, d'update, de création d'éléments, d'éléments déclassés, de sélection finale.
+Une interface de démo de l'action de d3.js sur une liste HTML, avec deux visualisations des données de :
+* sélection initiale
+* de dataset
+* d'update
+* de création d'éléments
+* d'éléments déclassés
+* de sélection finale
 
 http://www.equatorium.net/e1/in--interfaces~d3/dv-join.html
 
