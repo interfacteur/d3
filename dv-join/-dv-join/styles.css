@@ -19,6 +19,9 @@ a	{
 	color: inherit;
 	text-decoration: underline;
 }
+figcaption a	{
+	font-size: .9em;
+}
 a:hover,
 a:focus	{
 	text-decoration: none;
@@ -117,6 +120,9 @@ form	{
 	opacity: .33;
 	overflow: hidden;
 	width: 3em;
+}
+.legende.fermeture:hover	{
+	opacity: 1;
 }
 .legende.fermeture::after	{
 	content: "+";
