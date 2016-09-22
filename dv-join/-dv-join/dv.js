@@ -20,8 +20,8 @@
 				width: 850,
 				height: 200
 		}	},
-		dv = { // insérer un élément SVG dans la page (en fonction d'une définition instanciée)
-			dv1: {
+		dv = { // éléments SVG insérés dans la page (selon une définition "instanciée")
+			dv1: { // SVG de la visu sup.
 				id: "dv1",
 				instanceId: "svg1",
 				stries: {},
@@ -47,7 +47,7 @@
 						constructor(classe) {
 							super(classe, classe, (svg.svg1.largeur + 2) * 2 + 28);
 			};	}	}	},
-			dv2: {
+			dv2: { // SVG de la visu inf.
 				ecart: 17,
 				marge: 10,
 				get limite () { // ligne entre (rénovation + construction) et (conservation + démolition), càd repère 0 pour l'ordonnée y
@@ -59,7 +59,7 @@
 					return this.limiteX = Math.floor(svg.svg1.widAbs / this.ecart);
 		}	}	},
 		svg = {
-			Svg: class { // instancier la définition d'un SVG
+			Svg: class { // instanciation de la définition d'un SVG
 				constructor(id, par) {
 					this.top = par.top;
 					this.right = par.right;
@@ -95,14 +95,14 @@
 					return this.edifier(Object.assign(par, { title: "relatif" }))
 						.attr("transform", this.relatif);
 			};	},
-			creer (id, par) { // instanciation - les propriétés génériques de l'instance
+			creer (id, par) { // instancier - les propriétés génériques de l'instance
 				var propre = "_" + id;
 				Object.assign(svg[id] = new svg.Svg(id, par), svg[propre]);
 				delete svg[propre];
 				return svg[id];
 			},
-			_svg1: { // pré-définitions dans un objet provisoire - de propriétés propres à l'instance
-						/* to do : d'où une collection de manipulations pour plusieurs dv => OK ? */
+			_svg1: { // paramétrage dans un objet provisoire de propriétés particulière à une définition instanciée
+						/* to do : vérifier si OK de partager une collection de manipulations entre plusieurs dv */
 				get echelles () {
 					delete this.echelles;
 					return this.echelles = { // pour dv1 et pour dv2
@@ -749,17 +749,12 @@
 
 // dessin des segments
 		dv.dv2.baseSegments.selectAll("line")
-		.attr("x1", function () { // to do : avec d3.local() ?
-			var that = d3.select(this),
-				x = parseFloat(that.attr("x1")),
-				index = svg.svg1.echelles.xlogs.invert(x) + 1,
-				valeur = svg.svg1.echelles.xlogs(index);
-			that.attr("x2", valeur);
-			return valeur;
-		});
+		.attr("x1", function () { return svg.svg1.echelles.xlogs(++ this.__data__); })
+		.attr("x2", function () { return svg.svg1.echelles.xlogs(this.__data__); });
 
 		datail.logs.demolition[0] != 0
 		&& dv.dv2.baseSegmentsInf.append("line")
+		.data([0])
 		.attr("x1", 0)
 		.attr("x2", 0)
 		.attr("y1", svg.svg1.echelles.ylogsInf(datail.logs.conservation[0]))
@@ -767,6 +762,7 @@
 
 		datail.logs.construction[0] != 0
 		&& dv.dv2.baseSegmentsSup.append("line")
+		.data([0])
 		.attr("x1", 0)
 		.attr("x2", 0)
 		.attr("y1", svg.svg1.echelles.ylogsSup(datail.logs.construction[0]))
@@ -774,31 +770,31 @@
 
 // dessin des cercles
 		dv.dv2.baseCercles.selectAll("circle")
-		.attr("cx", function () {
-			var x = parseFloat(d3.select(this).attr("cx")),
-				index = svg.svg1.echelles.xlogs.invert(x) + 1;
-			return svg.svg1.echelles.xlogs(index);
-		});
+		.attr("cx", function () { return svg.svg1.echelles.xlogs(++ this.__data__); });
 
 		dv.dv2.cerclesrenovation.append("circle")
+		.data([0])
 		.attr("r", 3)
 		.attr("cx", 0)
 		.attr("cy", svg.svg1.echelles.ylogsSup(datail.logs.renovation[0]));
 
 		datail.logs.construction[0] != 0
 		&& dv.dv2.cerclesconstruction.append("circle")
+		.data([0])
 		.attr("r", 3)
 		.attr("cx", 0)
 		.attr("cy", svg.svg1.echelles.ylogsSup(datail.logs.construction[0]));
 
 		datail.logs.conservation[0] != 0
 		&& dv.dv2.cerclesconservation.append("circle")
+		.data([0])
 		.attr("r", 3)
 		.attr("cx", 0)
 		.attr("cy", svg.svg1.echelles.ylogsInf(datail.logs.conservation[0]));
 
 		datail.logs.demolition[0] != 0
 		&& dv.dv2.cerclesdemolition.append("circle")
+		.data([0])
 		.attr("r", 3)
 		.attr("cx", 0)
 		.attr("cy", svg.svg1.echelles.ylogsInf(datail.logs.demolition[0]));
@@ -834,8 +830,8 @@
 		legende.attr("class", legende.attr("class").indexOf("fermeture") < 0 ? "legende fermeture" : "legende");
 	}
 
+
+
+// to do : étendre à historique par ex. le lexique surface / cadastre / lotir / lotsVierges / batir / chantier / horsLot ?
+
 }) ();
-
-
-// to do : étendre (à historique par ex.) le lexique
-		// surface / cadastre / lotir / lotsVierges / batir / chantier / horsLot ?
