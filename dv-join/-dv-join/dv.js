@@ -12,29 +12,36 @@
 
 /*	Paramètres SVG	**** */
 		dimensions = {
-			svg1: {
+			sA: {
 				top: 20,
 				right: 20,
 				bottom: 20,
 				left: 286,
-				width: 850,
+				width: 600,
+				height: 200
+			},
+			sB: {
+				top: 20,
+				right: 20,
+				bottom: 20,
+				left: 20,
+				width: 1158,
 				height: 200
 		}	},
-		dv = { // éléments SVG insérés dans la page (selon une définition "instanciée")
-			dv1: { // SVG de la visu sup.
-				id: "dv1",
-				instanceId: "svg1",
+	// éléments SVG insérés dans la page (selon une instance de définition)
+		dv = {
+			dA1: { // SVG de la visu sup.
 				stries: {},
 				rectangles: {},
-				limiteX: 20,
+				limiteX: 15,
 				limiteY: 14, // moteur aPourvoir + 2
 				Rectangle: class {
 					constructor(classe, id, x) {
-						this.dom = dv.dv1.baseRect.append("rect") // to do : attrs() avec le module multi ?
+						this.dom = dv.dA1.baseRect.append("rect") // to do : attrs() avec le module multi ?
 							.attr("class", classe)
 							.attr("id", id)
 							.attr("x", x)
-							.attr("width", svg.svg1.largeur - 1);
+							.attr("width", svg.sA.largeur - 1);
 					};
 					eriger (par) {
 						this.height = par.height;
@@ -43,23 +50,28 @@
 				}	},
 				get RectangleFinal () {
 					delete this.RectangleFinal;
-					return this.RectangleFinal = class extends dv.dv1.Rectangle {
+					return this.RectangleFinal = class extends dv.dA1.Rectangle {
 						constructor(classe) {
-							super(classe, classe, (svg.svg1.largeur + 2) * 2 + 28);
+							super(classe, classe, (svg.sA.largeur + 2) * 2 + 28);
 			};	}	}	},
-			dv2: { // SVG de la visu inf.
+			dB1: { // SVG de la visu inf.
 				ecart: 17,
 				marge: 10,
 				get limite () { // ligne entre (rénovation + construction) et (conservation + démolition), càd repère 0 pour l'ordonnée y
 					delete this.limite;
-					return this.limite = (svg.svg1.heiAbs - this.marge * 2) / 22 * 12 + this.marge; // cf. moteur aPourvoir
+					return this.limite = (svg.sB.heiAbs - this.marge * 2) / 22 * 12 + this.marge; // cf. moteur aPourvoir
 				},
 				get limiteX () {
 					delete this.limiteX;
-					return this.limiteX = Math.floor(svg.svg1.widAbs / this.ecart);
-		}	}	},
+					return this.limiteX = Math.floor(svg.sB.widAbs / this.ecart);
+			}	},
+			dB2: {
+				limiteX: 40,
+				limiteY: 14, // moteur aPourvoir + 2
+		}	},
+	// instanciation (avec héritage prototypal) de définitions-objets d'un SVG, insérables dans le DOM
 		svg = {
-			Svg: class { // instanciation de la définition d'un SVG
+			Svg: class {
 				constructor(id, par) {
 					this.top = par.top;
 					this.right = par.right;
@@ -79,7 +91,8 @@
 					this.dv.push(par.id);
 					par.defaut
 					&& (this.def = par.id);
-					dv[par.id] = dv[par.id] || {}
+					dv[par.id] = dv[par.id] || {};
+					dv[par.id].svg = this;
 					dv[par.id].id = par.id;
 					dv[par.id].instanceId = this.id;
 					return dv[par.id].dom = d3.select(par.insertion).append("svg")
@@ -101,72 +114,49 @@
 				delete svg[propre];
 				return svg[id];
 			},
-			_svg1: { // paramétrage dans un objet provisoire de propriétés particulière à une définition instanciée
-						/* to do : vérifier si OK de partager une collection de manipulations entre plusieurs dv */
+		// objet provisoire pour paramétrer des propriétés particulières à une instance de définition
+			_sA: { // pour l'instance sA d'une ou plusieurs visualisations : dA1
 				get echelles () {
 					delete this.echelles;
-					return this.echelles = { // pour dv1 et pour dv2
+					return this.echelles = {
 						x: d3.scaleLinear()
-							.domain([0, dv.dv1.limiteX - 1])
-							.range([0, svg.svg1.widRel]),
+							.domain([0, dv.dA1.limiteX - 1])
+							.range([0, svg.sA.widRel]),
 						axeX: d3.scaleLinear()
-							.domain([1, dv.dv1.limiteX])
-							.range([0, svg.svg1.widRel]),
+							.domain([1, dv.dA1.limiteX])
+							.range([0, svg.sA.widRel]),
 						y: d3.scaleLinear()
-							.domain([0, dv.dv1.limiteY])
-							.range([svg.svg1.heiRel, 0]),
+							.domain([0, dv.dA1.limiteY])
+							.range([svg.sA.heiRel, 0]),
 						stries: d3.scaleLinear()
-							.domain([0, 1, dv.dv1.limiteX - 3])
+							.domain([0, 1, dv.dA1.limiteX - 3])
 							.range([133, 112, 0]), // to do : calculer ?
-						xlogs: d3.scaleLinear()
-							.domain([0, dv.dv2.limiteX])
-							.range([0, dv.dv2.limiteX * dv.dv2.ecart]),
-						ylogsSup: d3.scaleLinear()
-							.domain([0, 12]) // max du moteur aPourvoir
-							.range([dv.dv2.limite, dv.dv2.marge]),
-						ylogsInf: d3.scaleLinear()
-							.domain([0, 10]) // max des declassements possibles d'après moteur aPourvoir
-							.range([dv.dv2.limite, svg.svg1.heiAbs - dv.dv2.marge])
 				}	},
-				// les tracés pour dv1
-				get appliquer () { // to do : être sûr qu'assigné (Object.assign()) après echelle ?
+				// tracés
+				get appliquer () {
 					delete this.appliquer;
 					return this.appliquer = d3.area()
 						.curve(d3.curveCatmullRom)
-						.x((d, i) => svg.svg1.echelles.x(i) )
-						.y0(d => svg.svg1.echelles.y(d) )
-						.y1(svg.svg1.heiRel);
+						.x((d, i) => svg.sA.echelles.x(i) )
+						.y0(d => svg.sA.echelles.y(d) )
+						.y1(svg.sA.heiRel);
 				},
 				get tracer () {
 					delete this.tracer;
 					return this.tracer = d3.line()
-						.x((d, i) => svg.svg1.echelles.x(i) )
-						.y(d => svg.svg1.echelles.y(d) );
+						.x((d, i) => svg.sA.echelles.x(i) )
+						.y(d => svg.sA.echelles.y(d) );
 				},
 				get courber () {
 					delete this.courber;
 					return this.courber = d3.line()
-						.x((d, i) => svg.svg1.echelles.stries(i) )
-						.y(d => svg.svg1.echelles.y(d) );
+						.x((d, i) => svg.sA.echelles.stries(i) )
+						.y(d => svg.sA.echelles.y(d) );
 				},
-				// les tracés pour dv2
-				get totaliser () {
-					delete this.totaliser;
-					return this.totaliser = d3.area()
-						.x((d, i) => svg.svg1.echelles.xlogs(i) )
-						.y0(d => svg.svg1.echelles.ylogsSup(d[0]) )
-						.y1(d => svg.svg1.echelles.ylogsInf(d[1]) );
-				},
-				get pourvoyer () {
-					delete this.pourvoyer;
-					return this.pourvoyer = d3.line()
-						.x((d, i) => svg.svg1.echelles.xlogs(i) )
-						.y(d => svg.svg1.echelles.ylogsSup(d) );
-				},
-				// propriétés pour dv1
+				// propriétés
 				get dist () {
 					delete this.dist;
-					return this.dist = this.echelles.x(1); // to do : être sûr qu'assigné après echelle ?
+					return this.dist = this.echelles.x(1);
 				},
 				get largeur () {
 					delete this.largeur;
@@ -174,13 +164,37 @@
 				},
 				get relHtMiGauche () {
 					delete this.relHtMiGauche;
-					return this.relHtMiGauche = "translate(155," + svg.svg1.top + ")";
+					return this.relHtMiGauche = "translate(155," + svg.sA.top + ")";
 				},
 				get relHaut () {
 					delete this.relHaut;
-					return this.relHaut = "translate(17," + svg.svg1.top + ")";
+					return this.relHaut = "translate(17," + svg.sA.top + ")";
+			}	},
+			_sB: { // pour l'instance sB d'une ou plusieurs visualisations : dB1, dB2
+				get echelles () {
+					delete this.echelles;
+					return this.echelles = {
+						x: d3.scaleLinear() // dB1
+							.domain([0, dv.dB1.limiteX])
+							.range([0, dv.dB1.limiteX * dv.dB1.ecart]),
+						ySup: d3.scaleLinear() // dB1
+							.domain([0, 12]) // max du moteur aPourvoir
+							.range([dv.dB1.limite, dv.dB1.marge]),
+						yInf: d3.scaleLinear() // dB1
+							.domain([0, 10]) // max des declassements possibles d'après moteur aPourvoir
+							.range([dv.dB1.limite, svg.sB.heiAbs - dv.dB1.marge]),
+						axeX: d3.scaleLinear() // dB2
+							.domain([1, dv.dB2.limiteX])
+							.range([0, svg.sB.widRel])
+				}	},
+				// tracés
+				get totaliser () {
+					delete this.totaliser;
+					return this.totaliser = d3.area()
+						.x((d, i) => svg.sB.echelles.x(i) )
+						.y0(d => svg.sB.echelles.ySup(d[0]) )
+						.y1(d => svg.sB.echelles.yInf(d[1]) );
 		}	}	},
-
 
 /*	Paramètres données	**** */
 
@@ -249,129 +263,130 @@
 /*
 	CRÉATION SVG 1	****	****	****	****	****	*/
 
-	svg.creer("svg1", dimensions.svg1) // d'où svg.svg1 : instance d'une définition
-	.fonder({ // d'où dv.dv1 : inséré dans la page
-		id: "dv1",
+	svg.creer("sA", dimensions.sA) // svg.sA affecté à cette instance de définition
+	.fonder({ // d'où dv.dA1 : inséré dans la page
+		id: "dA1",
 		defaut: true,
-		insertion: "figure div"
+		insertion: "#dv1"
 	});
 
-	dv.dv1.clip = dv.dv1.dom.append("defs").append("clipPath")
-	.attr("id", "clip")
+	dv.dA1.clip = dv.dA1.dom.append("defs").append("clipPath")
+	.attr("id", "clip1")
 	.append("path");
 
-	svg.svg1.edifier({
+// arrière plan de soulignement des rectangles principaux
+	svg.sA.edifier({
 		title: "mi-gauche relatif",
 		classes: "coeur"
 	})
-	.attr("transform", svg.svg1.relHtMiGauche)
+	.attr("transform", svg.sA.relHtMiGauche)
 	.append("rect")
 	.attr("x", -1)
-	.attr("y", - svg.svg1.top)
-	.attr("width", svg.svg1.largeur * 3 + 33)
-	.attr("height", svg.svg1.heiAbs);
+	.attr("y", - svg.sA.top)
+	.attr("width", svg.sA.largeur * 3 + 33)
+	.attr("height", svg.sA.heiAbs);
 
 // superposition des "bases"
-	svg.svg1.edifierRelatif({
+	svg.sA.edifierRelatif({
 		classes: "grilles sousgrilles"
 	});
 
-	dv.dv1.baseAxes = svg.svg1.edifier({
+	dv.dA1.baseAxes = svg.sA.edifier({
 		title: "absolu",
 		classes: "axes"
 	});
 
-	dv.dv1.baseAreas = svg.svg1.edifierRelatif({ // affectation provisoire
+	dv.dA1.baseAreas = svg.sA.edifierRelatif({ // affectation provisoire
 		classes: "areas"
 	});
 
-	svg.svg1.edifierRelatif({
+	svg.sA.edifierRelatif({
 		classes: "grilles"
 	})
-	.style("clip-path", "url(#clip)");
+	.style("clip-path", "url(#clip1)");
 
-	dv.dv1.baseCercles = svg.svg1.edifierRelatif({
+	dv.dA1.baseCercles = svg.sA.edifierRelatif({
 		classes: "cercles"
 	});
 
-	dv.dv1.baseLines = svg.svg1.edifierRelatif({ // affectation provisoire
+	dv.dA1.baseLines = svg.sA.edifierRelatif({ // affectation provisoire
 		classes: "lines"
 	});
 
-	dv.dv1.baseRect = svg.svg1.edifier({
+	dv.dA1.baseRect = svg.sA.edifier({
 		title: "mi-gauche relatif",
 		classes: "rectangles"
 	})
-	.attr("transform", svg.svg1.relHtMiGauche);
+	.attr("transform", svg.sA.relHtMiGauche);
 
-	dv.dv1.baseHistries = svg.svg1.edifier({
+	dv.dA1.baseHistries = svg.sA.edifier({
 		title: "gauche relatif",
 		classes: "stries"
 	})
-	.attr("transform", svg.svg1.relHaut);
+	.attr("transform", svg.sA.relHaut);
 
-	dv.dv1.baseCourbe = svg.svg1.edifier({
+	dv.dA1.baseCourbe = svg.sA.edifier({
 		title: "gauche relatif",
 		classes: "courbe"
 	})
-	.attr("transform", svg.svg1.relHaut)
+	.attr("transform", svg.sA.relHaut)
 	.append("path");
 
 // dessin des axes
-	dv.dv1.baseAxes.append("g")
+	dv.dA1.baseAxes.append("g")
 	.attr("class", "x axis")
-	.attr("transform", "translate(" + svg.svg1.left + "," + svg.svg1.basRel + ")")
-	.call(d3.axisBottom(svg.svg1.echelles.axeX)
-		.ticks(dv.dv1.limiteX));
+	.attr("transform", "translate(" + svg.sA.left + "," + svg.sA.basRel + ")")
+	.call(d3.axisBottom(svg.sA.echelles.axeX)
+		.ticks(dv.dA1.limiteX));
 
-	dv.dv1.baseAxes.append("g")
+	dv.dA1.baseAxes.append("g")
 	.attr("class", "y axis")
-	.attr("transform", "translate(" + svg.svg1.left + "," + svg.svg1.top + ")")
-	.call(d3.axisLeft(svg.svg1.echelles.y)
+	.attr("transform", "translate(" + svg.sA.left + "," + svg.sA.top + ")")
+	.call(d3.axisLeft(svg.sA.echelles.y)
 		.ticks(10));
 
 // dessin des grilles
-	dv.dv1.grilles = dv.dv1.dom.selectAll(".grilles");
-	dv.dv1.grilles.append("g")
+	dv.dA1.grilles = dv.dA1.dom.selectAll(".grilles");
+	dv.dA1.grilles.append("g")
 	.selectAll("line")
-	.data(d3.range(dv.dv1.limiteX).slice(1))
+	.data(d3.range(dv.dA1.limiteX).slice(1))
 	.enter()
 		.append("line")
-		.attr("x1", d => svg.svg1.echelles.x(d) )
-		.attr("x2", d => svg.svg1.echelles.x(d) )
+		.attr("x1", d => svg.sA.echelles.x(d) )
+		.attr("x2", d => svg.sA.echelles.x(d) )
 		.attr("y1", 0)
-		.attr("y2", svg.svg1.heiRel);
+		.attr("y2", svg.sA.heiRel);
 
-	dv.dv1.grilles.append("g")
+	dv.dA1.grilles.append("g")
 	.selectAll("line")
-	.data(d3.range(dv.dv1.limiteY + 1).slice(1))
+	.data(d3.range(dv.dA1.limiteY + 1).slice(1))
 	.enter()
 		.append("line")
 		.attr("x1", 0)
-		.attr("x2", svg.svg1.widRel)
-		.attr("y1", d => svg.svg1.echelles.y(d) )
-		.attr("y2", d => svg.svg1.echelles.y(d) );
+		.attr("x2", svg.sA.widRel)
+		.attr("y1", d => svg.sA.echelles.y(d) )
+		.attr("y2", d => svg.sA.echelles.y(d) );
 
 // préparation des rectangles
-	dv.dv1.rectangles.aPourvoir = new dv.dv1.Rectangle("aPourvoir", "aPourvoir", svg.svg1.largeur + 2 + 14);
-	dv.dv1.rectangles.initial = new dv.dv1.Rectangle("existant", "initial", 0);
-	dv.dv1.rectangles.initial.eriger({
-		y: svg.svg1.echelles.y(datail.historique[0].initial),
-		height: svg.svg1.heiRel - svg.svg1.echelles.y(datail.historique[0].initial)
+	dv.dA1.rectangles.aPourvoir = new dv.dA1.Rectangle("aPourvoir", "aPourvoir", svg.sA.largeur + 2 + 14);
+	dv.dA1.rectangles.initial = new dv.dA1.Rectangle("existant", "initial", 0);
+	dv.dA1.rectangles.initial.eriger({
+		y: svg.sA.echelles.y(datail.historique[0].initial),
+		height: svg.sA.heiRel - svg.sA.echelles.y(datail.historique[0].initial)
 	});
 	datail.lesQuatre.forEach(
-		val => dv.dv1.rectangles[val] = new dv.dv1.RectangleFinal(val)
+		val => dv.dA1.rectangles[val] = new dv.dA1.RectangleFinal(val)
 	);
 
 // préparation des path
-	dv.dv1.baseAreas = dv.dv1.baseAreas
+	dv.dA1.baseAreas = dv.dA1.baseAreas
 	.selectAll("path")
 	.data(datail.indicatifs)
 	.enter()
 		.append("path")
 		.attr("class", d => d );
 
-	dv.dv1.baseLines = dv.dv1.baseLines
+	dv.dA1.baseLines = dv.dA1.baseLines
 	.selectAll("path")
 	.data(datail.constituants)
 	.enter()
@@ -380,11 +395,11 @@
 
 // préparation des "stries" de l'historique
 	datail.constituants.reverse(); // placer renovation en premier plan pour n'avoir que y2 à manipuler (line)
-	dv.dv1.baseHistries.selectAll("g")
-	.data(d3.range(dv.dv1.limiteX - 2))
+	dv.dA1.baseHistries.selectAll("g")
+	.data(d3.range(dv.dA1.limiteX - 2))
 	.enter()
 		.append("g")
-		.attr("transform", d => "translate(" + svg.svg1.echelles.stries(d) +")" )
+		.attr("transform", d => "translate(" + svg.sA.echelles.stries(d) +")" )
 		.selectAll("line")
 		.data(datail.constituants)
 		.enter()
@@ -392,19 +407,19 @@
 			.attr("class", d => d )
 			.attr("x1", 0)
 			.attr("x2", 0)
-			.attr("y1", svg.svg1.heiRel + 1)
-			.attr("y2", svg.svg1.heiRel + 1);
+			.attr("y1", svg.sA.heiRel + 1)
+			.attr("y2", svg.sA.heiRel + 1);
 	datail.constituants.reverse()
 	.forEach(
-		val => dv.dv1.stries[val] = d3.select(".stries").selectAll("." + val)
+		val => dv.dA1.stries[val] = d3.select(".stries").selectAll("." + val)
 	);
 
 // premier cercle
-	dv.dv1.baseCercles
+	dv.dA1.baseCercles
 	.append("circle")
 	.attr("r", 7)
-	.attr("cx", svg.svg1.echelles.x(0))
-	.attr("cy", svg.svg1.echelles.y(0));
+	.attr("cx", svg.sA.echelles.x(0))
+	.attr("cy", svg.sA.echelles.y(0));
 /*
 2
 3
@@ -418,68 +433,127 @@
 /*
 	CRÉATION SVG 2	****	****	****	****	****	*/
 
-	svg.svg1.fonder({
-		id: "dv2",
-		insertion: "article"
+	svg.creer("sB", dimensions.sB) // svg.sB affecté à cette instance de définition
+	.fonder({
+		id: "dB1",
+		defaut: true,
+		insertion: "#dv2"
 	});
 
-	dv.dv2.baseAxes = svg.svg1.edifier({
-		id: "dv2",
+	dv.dB1.baseAxes = svg.sB.edifier({
 		title: "absolu",
 		classes: "axes"
 	});
 
-	dv.dv2.baseArea = svg.svg1.edifier({
-		id: "dv2",
+	dv.dB1.baseArea = svg.sB.edifier({
 		title: "absolu",
-		classes: "areaDV2"
+		classes: "areaDVB1"
 	})
 	.append("path");
 
-	dv.dv2.baseLine = svg.svg1.edifier({
-		id: "dv2",
+	dv.dB1.baseLine = svg.sB.edifier({
 		title: "absolu",
-		classes: "lineDV2"
+		classes: "lineDVB1"
 	});
 
-	dv.dv2.baseSegments = svg.svg1.edifier({
-		id: "dv2",
+	dv.dB1.baseSegments = svg.sB.edifier({
 		title: "absolu",
-		classes: "segmentsDV2"
+		classes: "segmentsDVB1"
 	});
 
-	dv.dv2.baseCercles = svg.svg1.edifier({
-		id: "dv2",
+	dv.dB1.baseCercles = svg.sB.edifier({
 		title: "absolu",
-		classes: "cerclesDV2"
+		classes: "cerclesDVB1"
 	});
 
 // dessin des axes
-	dv.dv2.baseAxes.append("g")
-	.attr("class", "x axis axisDV2")
-	.attr("transform", "translate(0," + svg.svg1.top + ")")
-	.call(d3.axisTop(svg.svg1.echelles.xlogs)
-		.ticks(dv.dv2.limiteX / 3));
+	dv.dB1.baseAxes.append("g")
+	.attr("class", "x axis axisDVB1")
+	.attr("transform", "translate(0," + svg.sB.top + ")")
+	.call(d3.axisTop(svg.sB.echelles.x)
+		.ticks(dv.dB1.limiteX / 3));
 
 // préparation des segments
-	dv.dv2.baseSegmentsInf = dv.dv2.baseSegments.append("g")
-	.attr("class", "segmentsInfDV2");
-	dv.dv2.baseSegmentsSup = dv.dv2.baseSegments.append("g")
-	.attr("class", "segmentsSupDV2");
+	dv.dB1.baseSegmentsInf = dv.dB1.baseSegments.append("g")
+	.attr("class", "segmentsInfDVB1");
+	dv.dB1.baseSegmentsSup = dv.dB1.baseSegments.append("g")
+	.attr("class", "segmentsSupDVB1");
 
 // préparation des cercles
 	datail.lesQuatre.forEach(
-		val => dv.dv2["cercles" + val] = dv.dv2.baseCercles
+		val => dv.dB1["cercles" + val] = dv.dB1.baseCercles
 			.append("g")
 			.attr("class", "cercles" + val)
 	);
 
 // ligne limite
-	dv.dv2.baseLine.append("line")
+	dv.dB1.baseLine.append("line")
 	.attr("x1", 0)
-	.attr("x2", svg.svg1.widAbs)
-	.attr("y1", dv.dv2.limite)
-	.attr("y2", dv.dv2.limite);
+	.attr("x2", svg.sB.widAbs)
+	.attr("y1", dv.dB1.limite)
+	.attr("y2", dv.dB1.limite);
+/*
+2
+3
+4
+5
+6
+5
+4
+3
+2 */
+/*
+	CRÉATION SVG 3	****	****	****	****	****	*/
+if (false) { // to do…
+	svg.sB.fonder({
+		id: "dB2",
+		insertion: "#dv3"
+	});
+
+	dv.dB2.clip = dv.dB2.dom.append("defs").append("clipPath")
+	.attr("id", "clip2")
+	.append("path");
+
+// superposition des "bases"
+	svg.sB.edifierRelatif({
+		id: "dB2",
+		classes: "grilles sousgrilles"
+	});
+
+	dv.dB2.baseAxes = svg.sB.edifier({
+		id: "dB2",
+		title: "absolu",
+		classes: "axes"
+	});
+
+	dv.dB2.baseAreas = svg.sB.edifierRelatif({ // affectation provisoire
+		id: "dB2",
+		classes: "areas"
+	});
+
+	svg.sB.edifierRelatif({
+		id: "dB2",
+		classes: "grilles"
+	})
+	.style("clip-path", "url(#clip1)");
+
+	dv.dB2.baseCercles = svg.sB.edifierRelatif({
+		id: "dB2",
+		classes: "cercles"
+	});
+
+	dv.dB2.baseLines = svg.sB.edifierRelatif({ // affectation provisoire
+		id: "dB2",
+		classes: "lines"
+	});
+
+// dessin des axes
+	dv.dB2.baseAxes.append("g")
+	.attr("class", "x axis")
+	.attr("transform", "translate(" + svg.sB.left + "," + svg.sB.basRel + ")")
+	.call(d3.axisBottom(svg.sB.echelles.axeX)
+		.ticks(dv.dB2.limiteX));
+}
 /*
 2
 3
@@ -502,6 +576,10 @@
 		if (datail.historique[0].ready !== true)
 			return joinPerm.recursion = visualiser;
 		delete joinPerm.recursion;
+
+		! visualiser.init // this varie selon le mode d'invocation
+		&& legende.attr("class", "legende")
+		&& (visualiser.init = true);
 
 // "join"
 		var joinActu = {
@@ -569,16 +647,16 @@
 			datail.historique[0].conservation = datail.historique[0].declassement - datail.historique[0].demolition;
 			datail.historique[0].ready = 1 - datail.historique[0].demolition;
 		}
-		datail.historique.length == dv.dv1.limiteX + 1
+		datail.historique.length == dv.dA1.limiteX + 1
 		&& datail.historique.pop();
 
 		datail.logs.aPourvoir.unshift(datail.historique[0].aPourvoir);
-		datail.logs.aPourvoir.length == dv.dv2.limiteX + 1
+		datail.logs.aPourvoir.length == dv.dB1.limiteX + 1
 		&& datail.logs.aPourvoir.pop();
 		datail.lesQuatre.forEach(
 			val => {
 				datail.logs[val].unshift(datail.historique[0][val]);
-				datail.logs[val].length == dv.dv2.limiteX + 1
+				datail.logs[val].length == dv.dB1.limiteX + 1
 				&& datail.logs[val].pop();
 		}	);
 		datail.logs.construction = datail.logs.construction.map(
@@ -629,16 +707,14 @@
 		.attr("class", "construit");
 
 		joinActu.chantier
-		.style("border", "3px dashed rgb(51, 51, 51)")
-		.style("opacity", 1);
+		.style("border-style", "dashed");
 
 		joinActu.lotir // update à position autonome en version 4, avant ou après .enter().append()
 		.html("mis à jour <span>" + chrono.marque + "</span>")
 		.attr("class", "renove")
-		.style("border-right", "1.5em solid rgb(51, 51, 51)");
+		.style("border-right-width", "1.5em");
 
 		joinActu.horsLot
-		.style("opacity", .66)
 		.attr("class", "declassement")
 		.html(function (d, i) {
 			var txt = d3.select(this).text();
@@ -662,68 +738,68 @@
 
 // dessin des path
 	// areas, pour final et démolition
-		dv.dv1.baseAreas
+		dv.dA1.baseAreas
 		.data(joinActu.dataArea, d => d.cle || d )
-		.attr("d", d => svg.svg1.appliquer(d.valeur) );
+		.attr("d", d => svg.sA.appliquer(d.valeur) );
 
 	// clip (selon path final), pour la grille de premier plan
-		dv.dv1.clip
-		.attr("d", d => svg.svg1.appliquer(joinActu.dataArea[0].valeur) );
+		dv.dA1.clip
+		.attr("d", d => svg.sA.appliquer(joinActu.dataArea[0].valeur) );
 
 	// lines, pour rénovation, construction et conservation
-		dv.dv1.baseLines
+		dv.dA1.baseLines
 		.data(joinActu.dataLine, d => d.cle || d )
-		.attr("d", d => svg.svg1.tracer(d.valeur) );
+		.attr("d", d => svg.sA.tracer(d.valeur) );
 
 // dessin des cercles, pour aPourvoir
-		joinActu.cercles.lotir = dv.dv1.baseCercles
+		joinActu.cercles.lotir = dv.dA1.baseCercles
 		.selectAll("circle")
 		.data(datail.historique);
 		joinActu.cercles.batir = joinActu.cercles.lotir.enter()
 			.append("circle")
 			.attr("r", 7);
 		joinActu.cercles.lotir.merge(joinActu.cercles.batir)
-		.attr("cx", (d, i) => svg.svg1.echelles.x(i) )
-		.attr("cy", d => svg.svg1.echelles.y(d.aPourvoir) );
+		.attr("cx", (d, i) => svg.sA.echelles.x(i) )
+		.attr("cy", d => svg.sA.echelles.y(d.aPourvoir) );
 
 // couleur des rectangles
-		dv.dv1.rectangles.aPourvoir.eriger({
-			y: svg.svg1.echelles.y(datail.historique[0].aPourvoir),
-			height: svg.svg1.heiRel - svg.svg1.echelles.y(datail.historique[0].aPourvoir)
+		dv.dA1.rectangles.aPourvoir.eriger({
+			y: svg.sA.echelles.y(datail.historique[0].aPourvoir),
+			height: svg.sA.heiRel - svg.sA.echelles.y(datail.historique[0].aPourvoir)
 		});
-		dv.dv1.rectangles.initial.eriger({
-			y: svg.svg1.echelles.y(datail.historique[0].initial),
-			height: svg.svg1.heiRel - svg.svg1.echelles.y(datail.historique[0].initial)
+		dv.dA1.rectangles.initial.eriger({
+			y: svg.sA.echelles.y(datail.historique[0].initial),
+			height: svg.sA.heiRel - svg.sA.echelles.y(datail.historique[0].initial)
 		});
-		dv.dv1.rectangles.renovation.eriger({
-			y: svg.svg1.echelles.y(datail.historique[0].renovation),
-			height: svg.svg1.heiRel - svg.svg1.echelles.y(datail.historique[0].renovation)
+		dv.dA1.rectangles.renovation.eriger({
+			y: svg.sA.echelles.y(datail.historique[0].renovation),
+			height: svg.sA.heiRel - svg.sA.echelles.y(datail.historique[0].renovation)
 		});
-		dv.dv1.rectangles.construction.eriger({
-			y: svg.svg1.echelles.y(datail.historique[0].construction) - dv.dv1.rectangles.renovation.height,
-			height: svg.svg1.heiRel - svg.svg1.echelles.y(datail.historique[0].construction)
+		dv.dA1.rectangles.construction.eriger({
+			y: svg.sA.echelles.y(datail.historique[0].construction) - dv.dA1.rectangles.renovation.height,
+			height: svg.sA.heiRel - svg.sA.echelles.y(datail.historique[0].construction)
 		});
-		dv.dv1.rectangles.conservation.eriger({
-			y: svg.svg1.echelles.y(datail.historique[0].conservation) - dv.dv1.rectangles.renovation.height,
-			height: svg.svg1.heiRel - svg.svg1.echelles.y(datail.historique[0].conservation)
+		dv.dA1.rectangles.conservation.eriger({
+			y: svg.sA.echelles.y(datail.historique[0].conservation) - dv.dA1.rectangles.renovation.height,
+			height: svg.sA.heiRel - svg.sA.echelles.y(datail.historique[0].conservation)
 		});
-		dv.dv1.rectangles.demolition.eriger({
-			y: svg.svg1.echelles.y(datail.historique[0].demolition) - dv.dv1.rectangles.renovation.height - dv.dv1.rectangles.conservation.height,
-			height: svg.svg1.heiRel - svg.svg1.echelles.y(datail.historique[0].demolition)
+		dv.dA1.rectangles.demolition.eriger({
+			y: svg.sA.echelles.y(datail.historique[0].demolition) - dv.dA1.rectangles.renovation.height - dv.dA1.rectangles.conservation.height,
+			height: svg.sA.heiRel - svg.sA.echelles.y(datail.historique[0].demolition)
 		});
 
 // couleur des stries
 		datail.historique.length > 2
 		&& joinActu.dataLine.forEach(
 			val => {
-				dv.dv1.stries[val.cle]
+				dv.dA1.stries[val.cle]
 				.data(val.valeur.slice(1, -1))
-				.attr("y2", (d, i) => svg.svg1.echelles.y(val.cle == "renovation" ? d : d + joinActu.dataLine[0].valeur.slice(1)[i]) - 1 )
+				.attr("y2", (d, i) => svg.sA.echelles.y(val.cle == "renovation" ? d : d + joinActu.dataLine[0].valeur.slice(1)[i]) - 1 )
 		}	);
 
 // courbe (path) des "à pourvoir"
-		dv.dv1.baseCourbe
-		.attr("d", _ => svg.svg1.courber(joinActu.dataCourbe) );
+		dv.dA1.baseCourbe
+		.attr("d", _ => svg.sA.courber(joinActu.dataCourbe) );
 /*
 2
 3
@@ -744,60 +820,60 @@
 		]);
 
 // dessin du path
-		dv.dv2.baseArea
-		.attr("d", svg.svg1.totaliser(datail.logs.amplitudes));
+		dv.dB1.baseArea
+		.attr("d", svg.sB.totaliser(datail.logs.amplitudes));
 
 // dessin des segments
-		dv.dv2.baseSegments.selectAll("line")
-		.attr("x1", function () { return svg.svg1.echelles.xlogs(++ this.__data__); })
-		.attr("x2", function () { return svg.svg1.echelles.xlogs(this.__data__); });
+		dv.dB1.baseSegments.selectAll("line")
+		.attr("x1", function () { return svg.sB.echelles.x(++ this.__data__); })
+		.attr("x2", function () { return svg.sB.echelles.x(this.__data__); });
 
 		datail.logs.demolition[0] != 0
-		&& dv.dv2.baseSegmentsInf.append("line")
+		&& dv.dB1.baseSegmentsInf.append("line")
 		.data([0])
 		.attr("x1", 0)
 		.attr("x2", 0)
-		.attr("y1", svg.svg1.echelles.ylogsInf(datail.logs.conservation[0]))
-		.attr("y2", svg.svg1.echelles.ylogsInf(datail.logs.demolition[0]));
+		.attr("y1", svg.sB.echelles.yInf(datail.logs.conservation[0]))
+		.attr("y2", svg.sB.echelles.yInf(datail.logs.demolition[0]));
 
 		datail.logs.construction[0] != 0
-		&& dv.dv2.baseSegmentsSup.append("line")
+		&& dv.dB1.baseSegmentsSup.append("line")
 		.data([0])
 		.attr("x1", 0)
 		.attr("x2", 0)
-		.attr("y1", svg.svg1.echelles.ylogsSup(datail.logs.construction[0]))
-		.attr("y2", svg.svg1.echelles.ylogsSup(datail.logs.renovation[0]));
+		.attr("y1", svg.sB.echelles.ySup(datail.logs.construction[0]))
+		.attr("y2", svg.sB.echelles.ySup(datail.logs.renovation[0]));
 
 // dessin des cercles
-		dv.dv2.baseCercles.selectAll("circle")
-		.attr("cx", function () { return svg.svg1.echelles.xlogs(++ this.__data__); });
+		dv.dB1.baseCercles.selectAll("circle")
+		.attr("cx", function () { return svg.sB.echelles.x(++ this.__data__); });
 
-		dv.dv2.cerclesrenovation.append("circle")
+		dv.dB1.cerclesrenovation.append("circle")
 		.data([0])
 		.attr("r", 3)
 		.attr("cx", 0)
-		.attr("cy", svg.svg1.echelles.ylogsSup(datail.logs.renovation[0]));
+		.attr("cy", svg.sB.echelles.ySup(datail.logs.renovation[0]));
 
 		datail.logs.construction[0] != 0
-		&& dv.dv2.cerclesconstruction.append("circle")
+		&& dv.dB1.cerclesconstruction.append("circle")
 		.data([0])
 		.attr("r", 3)
 		.attr("cx", 0)
-		.attr("cy", svg.svg1.echelles.ylogsSup(datail.logs.construction[0]));
+		.attr("cy", svg.sB.echelles.ySup(datail.logs.construction[0]));
 
 		datail.logs.conservation[0] != 0
-		&& dv.dv2.cerclesconservation.append("circle")
+		&& dv.dB1.cerclesconservation.append("circle")
 		.data([0])
 		.attr("r", 3)
 		.attr("cx", 0)
-		.attr("cy", svg.svg1.echelles.ylogsInf(datail.logs.conservation[0]));
+		.attr("cy", svg.sB.echelles.yInf(datail.logs.conservation[0]));
 
 		datail.logs.demolition[0] != 0
-		&& dv.dv2.cerclesdemolition.append("circle")
+		&& dv.dB1.cerclesdemolition.append("circle")
 		.data([0])
 		.attr("r", 3)
 		.attr("cx", 0)
-		.attr("cy", svg.svg1.echelles.ylogsInf(datail.logs.demolition[0]));
+		.attr("cy", svg.sB.echelles.yInf(datail.logs.demolition[0]));
 /*
 2
 3
@@ -827,6 +903,7 @@
 	var legende = d3.select("#legende");
 	document.querySelector("#legende").onclick = e => {
 		e.preventDefault();
+		visualiser.init = true;
 		legende.attr("class", legende.attr("class").indexOf("fermeture") < 0 ? "legende fermeture" : "legende");
 	}
 
