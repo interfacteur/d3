@@ -1,40 +1,42 @@
-/* Gaëtan Langhade, Interfacteur, sept. 2016 */
+/* Gaëtan Langhade, Interfacteur, septembre-octobre 2016 */
 
-/* HTML */
+
+/*	HTML ****	****	****	****	****	*/
+
 body	{
-	font-family: sans-serif;
-	margin: 0;
-	min-height: 100vh;
 	padding: 0 1em;
-}
-[type="submit"]	{
-	box-shadow: 0 0 .05em .06em darkSlateGray;
-	color: darkSlateGray;
-	cursor: pointer;
-	font-size: 100%;
-}
-[type="number"]	{
-	width: 4em;
 }
 a	{
 	color: inherit;
-	text-decoration: underline;
-}
-a:hover,
-a:focus	{
-	text-decoration: none;
 }
 h1	{
 	color: darkSlateGray;
 	font-family: "pt sans narrow";
 	font-size: 1.75em;
 	font-weight: normal;
-	margin: 0;
+	margin-top: .1em;
 	opacity: .5;
 	text-align: center;
 }
+
+/* */
 .contraint	{
 	max-width: 1400px;
+}
+form	{
+	min-width: 1200px;
+	position: relative;
+}
+.process	{
+	display: inline-block;
+	font-size: 1.2em;
+	padding-top: 1em;
+}
+.cmd	{
+	font-size: .8em;
+	line-height: 2;
+	margin: -4.9em 0 2.5em 0;
+	text-align: right;
 }
 .principal	{
 	align-items: flex-start;
@@ -48,65 +50,88 @@ h1	{
 	flex: 1;
 }
 .principal figure	{
-	margin: 0;
 	padding-right: 1em;
 }
 .principal ol	{
 	min-width: 18.3em;
 }
-form	{
-	min-width: 1200px;
-	position: relative;
-}
 article	{
 	margin-top: 1.6em;
 	background-color: white;
 }
-article:hover	{
+
+/* */
+[type="submit"]	{
+	box-shadow: 0 0 .05em .06em darkSlateGray;
+	color: darkSlateGray;
+	line-height: 1.3;
+	margin-right: -3.6em;
+	padding: 0 .6em;
 	position: relative;
+	top: -2.6em;
 }
-
-
-
+[type="number"]	{
+	width: 4em;
+}
 .pourvoyage	{
 	background: white;
 	border: 0;
-	width: 1em;
+	font-size: .7em;
+	text-align: center;
+	width: 2em;
 }
-.exemples	{
-	display: inline-block;
-	font-size: 1.2em;
-	padding-left: .8em;
+.pourvoyage:hover,
+.pourvoyage:focus	{
+	background: #E1E6E6;
 }
-.exemples span	{
-	font-size: .75em;
-	font-weight: bold;
+.cmd input	{
+	font: initial;
+	font-family: "-apple-system", sans-serif;
+	font-size: .85em;
 }
-.exemples samp	{
+.cmd label,
+.cmd span	{
+	color: darkSlateGray;
+	opacity: .5;
+}
+
+/* */
+.process samp	{
 	border-radius: .25em;
 	color: white;
 	display: inline-block;
+	font-family: monospace;
 	font-size: .85em;
 	height: 1.4em;
-	line-height: 1.66;
+	letter-spacing: -1px;
+	line-height: 1.5;
+	margin: 0 .4em;
 	position: relative;
 	text-align: center;
-	width: 1.4em;
+	width: 1.6em;
+}
+samp.final	{
+	box-shadow: 0 0 0 2px rgba(225, 206, 154, .5) inset;
+	font-size: 1.3em;
+	margin: 0 .1em;
+	position: relative;
+	top: 2px;
+	width: 1.5em;
 }
 .ope1::before,
 .ope2::after	{
-	color: silver;
+	color: darkSlateGray;
 	left: 0;
 	position: absolute;
 	text-align: center;
 	width: 100%;
 }
 .ope1::before	{
+	bottom: -1.5em;
 	content: "+";
-	top: -1.4em;
 }
 .ope2::after	{
-	bottom: -1.5em;
+	top: -1.3em;
 }
 .ope2.plus::after	{
 	content: "+";
@@ -114,17 +139,50 @@ article:hover	{
 .ope2.moins::after	{
 	content: "-";
 }
-.cmd	{
-	font-size: .9em;
-	margin-top: -1.5em;
-	text-align: right;
+.process > span	{
+	display: inline-block;
+	font-size: .7em;
+}
+.process span.gauche	{
+	margin-left: .4em;
+}
+.process samp.droite	{
+	margin-right: .1em;
+}
+.process span span span	{
+	color: white;
+	opacity: 0;
 }
 
+/* */
+figcaption	{
+	color: silver;
+	font-family: "open sans";
+	font-size: .9em;
+	line-height: 1.35;
+	padding-top: .4em;
+	text-align: right;
+}
+figcaption a	{
+	font-size: .9em;
+}
+figcaption p	{
+	text-align: left;
+}
+figcaption p:first-child	{
+	color: darkSlateGray;
+	float: left;
+}
+figcaption:hover p:last-child	{
+	color: darkSlateGray;
+}
+
+/* */
 .legende	{
 	border: 1px solid rgba(47, 79, 79, .33);
 	position: absolute;
 	right: 0;
-	top: 16em;
+	top: 44em;
 	z-index: 1;
 }
 .legende::after	{
@@ -158,24 +216,11 @@ article:hover	{
 	content: "+";
 }
 
-figcaption	{
-	color: silver;
-	font-family: "open sans";
-	font-size: .9em;
-	text-align: right;
-}
-figcaption a	{
-	font-size: .9em;
-}
-figcaption p	{
-	margin: 0;
-	text-align: left;
-}
+/* */
 ol	{
 	border-radius: 1em;
 	box-shadow: .33em 0 darkSlateGray inset, 1.75em 0 white inset, 2em 0 darkSlateGray inset;
 	font-size: .85em;
-	margin: 0;
 	opacity: .4;
 	padding: 0 0 0 2em;
 	position: relative;
@@ -185,7 +230,7 @@ ol:hover	{
 }
 ol::before	{
 	color: darkSlateGray;
-	content: "liste manipulée par d3.js";
+	content: attr(title);
 	font-weight: bold;
 	left: -4444em;
 	text-align: center;
@@ -209,20 +254,66 @@ li span	{
 	font-size: .66em;
 }
 
-/* SVG générique et 1 */
+
+
+
+
+/*	SVG ****	****	****	****	****	*/
+
 svg	{
 	border: 1px dotted rgba(47, 79, 79, .33);
 	background: white;
 	border-radius: .33em;
 }
+svg:hover	{
+	position: relative;
+}
 article:first-of-type svg	{
-	background: rgba(47, 79, 79, .175);
+	background: #E1E6E6; /* càd rgba(47, 79, 79, .14) */
 }
 line,
 path	{
 	fill: none;
 	stroke-width: 1px;
 }
+
+/* */
+.equateur-dv2	{
+	stroke: #EBEEEE;
+}
+.pathAire-dv2 path	{
+	fill: white;
+	stroke: none;
+}
+.pathCourbes-dv1 path,
+.pathCourbe-dv2 path	{
+	stroke-width: 1px;
+}
+.cercles-dv1 circle,
+.cercles-dv2 circle	{
+	stroke: none;
+}
+.cercles-dv3 circle,
+.pathCourbes-dv1 .construction,
+.pathCourbes-dv1 .conservation,
+.picto-dv1 path	{
+	fill: none;
+	stroke-width: 2px;
+}
+
+/* */
+.dv1-bis .stries,
+.dv1-bis .courbe	{
+	opacity: .3;
+	transform: rotateY(180deg) translate(-240px, 0); /* évolution de l'interface en fin de projet : */
+}
+.dv1-bis:hover .stries,
+.dv1-bis:hover .courbe	{
+	opacity: 1;
+}
+
+
+/* axes */
 .axis {
 	font: 10px sans-serif;
 }
@@ -231,85 +322,87 @@ path	{
 	stroke: rgba(0, 0, 0, .2);
 	shape-rendering: crispEdges;
 }
-.axisDVB1 path	{
+.axis-dv2 path	{
 	display: none;
 }
-.axisDVB1 line	{
+.axis-dv2 line	{
 	stroke: #EBEEEE;
 	stroke-width: 4px;
 }
-.axisDVB1 text	{
+.axis-dv2 text	{
 	fill: white;
 	font-size: 1.1em;
 }
-path.final	{
-	fill: rgba(47, 79, 79, .175);
+.dv2:hover .axis-dv2 text	{
+	fill: darkSlateGray;
 }
+
 /* grilles */
 .grilles.sousgrilles line	{
 	stroke: rgba(47, 79, 79, .1);
 }
-.grilles line	{
+.grilles-dv1.grilles line	{
+	stroke: white;
+}
+.grilles-dv3.grilles line	{
 	stroke: rgb(223, 255, 204);
 }
-.lines path	{
-	stroke-width: 2px;
-}
-/* cercles */
-.cercles circle	{
-	fill: none;
-	stroke: darkSlateGray;
-	stroke-width: 2px;
-}
+
 /* rectangles */
 rect	{
 	stroke-width: 2px;
+}
+.cadres-dv1 rect	{
+	fill: white;
+	fill: #E1E6E6;
+	stroke-width: 1px;
 }
 rect.aPourvoir,
 rect.demolition	{
 	fill: white;
 }
 [y] + rect.existant	{
-	opacity: .85;
+	opacity: .6;
 }
 .coeur rect	{
-	fill: rgba(223, 255, 204, .3);
-	stroke: rgb(223, 255, 204);
-	stroke-width: 2px;
+	fill: white;
+	stroke: rgba(225, 206, 154, .5); /* 225, 206, 154 : Vanille */
+	stroke-width: 10px;
 }
-/* stries */
+.sensibilisant	{
+	fill: transparent;
+}
+
+/* "bis" : stries */
 .stries g:first-child line	{
 	stroke-width: 8px;
 	opacity: 1;
 }
 .stries line	{
 	stroke-width: 7px;
-	opacity: .44;
+	opacity: .9;
 }
-/* courbe */
-.courbe path	{
-	stroke: darkSlateGray;
+.stries g line.demolition	{
+	stroke-width: 2px;
 }
 
 
 
+/* DECLINAISONS */
 
-
-/* BASES */
+/* de base */
 samp.initial	{
 	background: darkSlateGray;
 }
 samp.aPourvoir	{
-	box-shadow: 0 0 0 3px darkSlateGray inset;
-	color: darkSlateGray;
+	box-shadow: 0 0 0 2px darkSlateGray inset;
 }
+samp.aPourvoir,
 samp.final	{
-	box-shadow: 0 0 0 3px rgba(47, 79, 79, .175) inset;
 	color: darkSlateGray;
-	font-weight: bold;
 }
-path.demolition	{
-	fill: rgba(255, 255, 255, .44);
+.pathAires-dv3 path.demolition	{
+	fill: rgba(210, 105, 30, .25);
 	stroke: darkSlateGray;
 	stroke-width: 1px !important;
 }
@@ -317,35 +410,34 @@ rect.existant	{
 	fill: darkSlateGray;
 	stroke: darkSlateGray;
 }
+.courbe path,
 rect.aPourvoir	{
 	stroke: darkSlateGray;
 }
-
-
-/* CONSTRUISANT */
-li.construit	{
-	border-color: steelBlue;
+path.final	{
+	fill: rgba(47, 79, 79, .14);
 }
-samp.construction	{
-	background: steelBlue;
+.pathCourbe-dv2 path	{
+	stroke: rgba(47, 79, 79, .4);
+	stroke-width: 1px;
 }
-path.construction,
-rect.construction,
-line.construction,
-.segmentsSupDVB1	{
-	stroke: steelBlue;
+.cercles-dv3 circle	{
+	stroke: rgba(47, 79, 79, .44);
 }
-rect.construction,
-.cerclesconstruction circle	{
-	fill: steelBlue;
+.cadres-dv1 rect	{
+	stroke: rgba(47, 79, 79, .6);
+	stroke: darkSlateGray;
 }
 
-/* RENOVANT */
+/* "rénovation" */
 li.renove	{
 	border-color: oliveDrab;
 }
 samp.renovation	{
 	background: oliveDrab;
+}
+samp.renovation::before	{
+	color: oliveDrab;
 }
 path.renovation,
 rect.renovation,
@@ -356,8 +448,36 @@ rect.renovation,
 .cerclesrenovation circle	{
 	fill: oliveDrab;
 }
+.pathAires-dv1 path.renovation	{
+	/* rgba(107, 142, 35, .1) sur blanc : #F0F3E8 */
+	fill: rgba(107, 142, 35, .075); /* sur blanc : #F4F7EE */
+	stroke-width: 0;
+}
 
-/* DÉCLASSANT */
+/* "construction" */
+li.construit	{
+	border-color: steelBlue;
+}
+samp.construction	{
+	background: steelBlue;
+}
+samp.construction::before,
+samp.construction::after	{
+	color: steelBlue;
+}
+path.construction,
+rect.construction,
+line.construction,
+.picto-dv1.construction path,
+.segmentsSup-dv2	{
+	stroke: steelBlue;
+}
+rect.construction,
+.cerclesconstruction circle	{
+	fill: steelBlue;
+}
+
+/* "déclassement" */
 li.declassement	{
 	border-color: chocolate;
 }
@@ -365,37 +485,30 @@ samp.conservation	{
 	background: chocolate;
 }
 samp.demolition	{
-	box-shadow: 0 0 0 3px chocolate inset;
+	box-shadow: 0 0 0 2px chocolate inset;
+	color: chocolate;
+}
+samp.conservation::before,
+samp.demolition::after	{
 	color: chocolate;
 }
 path.conservation,
+.pathCourbes-dv1 path.demolition,
 rect.conservation,
 rect.demolition,
 line.conservation,
-.segmentsInfDVB1	{
+.picto-dv1.conservation path,
+line.demolition,
+.segmentsInf-dv2	{
 	stroke: chocolate;
 }
 rect.conservation,
-.cerclesconservation circle	{
+.cerclesconservation circle,
+.cercles-dv1 circle	{
 	fill: chocolate;
 }
-.cerclesDVB1 .cerclesdemolition circle	{
+.cercles-dv2 .cerclesdemolition circle	{
 	fill: #DAE0E0;
 	stroke: chocolate;
 	stroke-width: 1px;
-}
-
-
-
-
-/* SVG 2 */
-.lineDVB1	{
-	stroke: #EBEEEE;
-}
-.areaDVB1 path	{
-	fill: white;
-	stroke: none;
-}
-.cerclesDVB1 circle	{
-	stroke: none;
 }
