@@ -1,6 +1,8 @@
 D3.js v4 avec RequireJS
 -------
 
+Versions expérimentales personnelles :
+
 * v4lib-kit : kit de chargement de la librairie version 4
 
 * v4modules-kit : kit de chargement des modules de la version 4

@@ -1,6 +1,8 @@
 Les modules d3.js v4 avec RequireJS
 -------
 
+Version expérimentale personnelle
+
 Kit de chargement des modules de la version 4 avec RequireJS
 
 Date : modules obtenus le 11 août 2016
