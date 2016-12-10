@@ -45,7 +45,7 @@
 var dv, svg;
 
 
-// SVG par les "configurations", instanciables, prototypées
+// "configurations" des SVG, instanciables, prototypées
 svg = {
 
 	// constructeur des "configurations"
@@ -89,7 +89,7 @@ svg = {
 	};	},
 
 	// instancier une "configuration" - les propriétés génériques de l'instance
-	definir (id, par) {
+	configurer (id, par) {
 		var propre = "_" + id;
 		Object.assign(svg[id] = new svg.Svg(id, par), svg[propre]);
 		delete svg[propre];
@@ -112,7 +112,7 @@ svg = {
 }	};
 
 
-// SVG par les "visualisations", instanciables, prototypées
+// "visualisations" des SVG, instanciables, prototypées
 dv = {
 
 	// constructeur des "visualisations"
@@ -166,20 +166,20 @@ dv = {
 			&& this.achever(); // à exécuter après la dernière instanciation des "visualisations"
 		};
 		// la pile des <g de premier niveau
-		edifier (par) {
+		etablir (par) {
 			return this.dom.append("g")
-				.attr("title", par.title)
+				.attr("data-coord", par.title)
 				.attr("class", par.classes || "");
 		};
 		// la pile des <g de premier niveau : <g relatif aux marges
-		edifierRelatif (par) {
-			return this.edifier(Object.assign(par, { title: "relatif" }))
+		etablirRelatif (par) {
+			return this.etablir(Object.assign(par, { title: "relatif" }))
 				.attr("transform", this.svg.relatif);
 		};
 		// la pile de <g de niveau "bis"
 		inserer (par) {
 			return this.gBis.append("g")
-				.attr("title", par.title)
+				.attr("data-coord", par.title)
 				.attr("class", par.classes || "");
 		};
 		// axe X devant avoir des étiquettes défilantes

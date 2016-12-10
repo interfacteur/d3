@@ -22,7 +22,7 @@ redaction = ["s, ", "au total"]; // http://www.lemonde.fr/m-actu/article/2014/02
 
 
 /*
-	PARAMÈTRES SVG	****	****	****	****	****	*/
+	PARAMÈTRES DES SVG	****	****	****	****	****	*/
 
 
 // dimensions des SVG : cf. dv-dimensions.js
@@ -374,7 +374,7 @@ dv.dB2 = {
 3
 2 */
 /*
-	PARAMÈTRES JOIN	****	****	****	****	****	*/
+	PARAMÈTRES DE JOIN	****	****	****	****	****	*/
 
 joinGlobal = {
 	bornage: d3.select("ol"),
@@ -396,7 +396,7 @@ joinGlobal = {
 3
 2 */
 /*
-	PARAMÈTRES DONNÉES	****	****	****	****	****	*/
+	PARAMÈTRES DES DONNÉES	****	****	****	****	****	*/
 
 datail = {
 	moteur: 10, // moteur aPourvoir, càd aléatoire en entre 2 et 12 - cf. datail.anteHisto

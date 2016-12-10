@@ -10,7 +10,7 @@
 /*
 	CRÉATION DU SVG 1	****	****	****	****	****	*/
 
-svg.definir("sA", dimensions.svgA) // svg.sA affecté à une instance de "configuration"
+svg.configurer("sA", dimensions.svgA) // svg.sA affecté à une instance de "configuration"
 .visualiser({ // dv.dA1 affecté à une instance de "visualisation"
 	id: "dA1",
 	defaut: true,
@@ -27,41 +27,41 @@ svg.definir("sA", dimensions.svgA) // svg.sA affecté à une instance de "config
 	.append("path");
 
 // superposition à la base des groupes-fondations
-	this.edifierRelatif({
+	this.etablirRelatif({
 		classes: "grilles sousgrilles"
 	});
 
-	this.gAxes = this.edifier({
+	this.gAxes = this.etablir({
 		title: "absolu",
 		classes: "axes"
 	});
 
-	this.gAires = this.edifierRelatif({
+	this.gAires = this.etablirRelatif({
 		classes: "pathAires-dv1"
 	});
 
-	this.edifierRelatif({
+	this.etablirRelatif({
 		classes: "grilles grilles-dv1"
 	})
 	.style("clip-path", "url(#clip1)");
 
-	this.gCourbes = this.edifierRelatif({
+	this.gCourbes = this.etablirRelatif({
 		classes: "pathCourbes-dv1"
 	});
 
-	this.gCadres = this.edifierRelatif({
+	this.gCadres = this.etablirRelatif({
 		classes: "cadres-dv1"
 	});
 
-	this.gPictoConstruction = this.edifierRelatif({
+	this.gPictoConstruction = this.etablirRelatif({
 		classes: "picto-dv1 construction"
 	});
 
-	this.gPictoConservation = this.edifierRelatif({
+	this.gPictoConservation = this.etablirRelatif({
 		classes: "picto-dv1 conservation"
 	});
 
-	this.gCercles = this.edifierRelatif({
+	this.gCercles = this.etablirRelatif({
 		classes: "cercles-dv1"
 	});
 
@@ -126,7 +126,7 @@ svg.definir("sA", dimensions.svgA) // svg.sA affecté à une instance de "config
 /*	****	****	****	****	****
 	"bis" */
 
-	this.gBis = this.edifier({
+	this.gBis = this.etablir({
 		classes: "dv1-bis",
 		title: "panneau secondaire",
 	})
@@ -219,7 +219,7 @@ svg.definir("sA", dimensions.svgA) // svg.sA affecté à une instance de "config
 /*
 	CRÉATION DU SVG 2	****	****	****	****	****	*/
 
-svg.definir("sB", dimensions.svgB) // svg.sB affecté à une instance de "configuration"
+svg.configurer("sB", dimensions.svgB) // svg.sB affecté à une instance de "configuration"
 .visualiser({ // dv.dB1 affecté à une instance de "visualisation"
 	id: "dB1",
 	defaut: true,
@@ -231,34 +231,34 @@ svg.definir("sB", dimensions.svgB) // svg.sB affecté à une instance de "config
 	var defin = this.svg; // svg.sB
 
 // superposition à la base des groupes-fondations
-	this.gAxes = this.edifier({
+	this.gAxes = this.etablir({
 		title: "absolu",
 		classes: "axes"
 	});
 
-	this.pAire = this.edifier({
+	this.pAire = this.etablir({
 		title: "absolu",
 		classes: "pathAire-dv2"
 	})
 	.append("path");
 
-	this.pCourbe = this.edifier({
+	this.pCourbe = this.etablir({
 		title: "absolu",
 		classes: "pathCourbe-dv2"
 	})
 	.append("path");
 
-	this.gEquateur = this.edifier({
+	this.gEquateur = this.etablir({
 		title: "absolu",
 		classes: "equateur-dv2"
 	});
 
-	this.gSegments = this.edifier({
+	this.gSegments = this.etablir({
 		title: "absolu",
 		classes: "segments-dv2"
 	});
 
-	this.gCercles = this.edifier({
+	this.gCercles = this.etablir({
 		title: "absolu",
 		classes: "cercles-dv2"
 	});
@@ -324,29 +324,29 @@ svg.sB.visualiser({ // dv.dB2 affecté à une instance de "visualisation"
 	.append("path");
 
 // superposition à la base des groupes-fondations
-	this.edifierRelatif({
+	this.etablirRelatif({
 		classes: "grilles sousgrilles"
 	});
 
-	this.gAxes = this.edifier({
+	this.gAxes = this.etablir({
 		title: "absolu",
 		classes: "axes"
 	});
 
-	this.pAires = this.edifierRelatif({ // affectation provisoire
+	this.pAires = this.etablirRelatif({ // affectation provisoire
 		classes: "pathAires-dv3"
 	});
 
-	this.edifierRelatif({
+	this.etablirRelatif({
 		classes: "grilles grilles-dv3"
 	})
 	.style("clip-path", "url(#clip2)");
 
-	this.pCourbes = this.edifierRelatif({ // affectation provisoire
+	this.pCourbes = this.etablirRelatif({ // affectation provisoire
 		classes: "pathCourbes-dv3"
 	});
 
-	this.gCercles = this.edifierRelatif({
+	this.gCercles = this.etablirRelatif({
 		classes: "cercles-dv3"
 	});
 
